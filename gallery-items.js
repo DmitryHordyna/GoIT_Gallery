@@ -1,6 +1,5 @@
 import images from './images.js';
 
-
 const galleryListRef = document.querySelector('.js-gallery')
 const modalRef = document.querySelector('.js-lightbox')
 const contentImgRef = document.querySelector('.lightbox__image')
@@ -11,7 +10,8 @@ const galleryMarkup = images.map(el => {
     <li class="gallery__item">
     <a
      class="gallery__link"
-   
+       href="${el.original}"
+
 "
  >
     <img
@@ -22,66 +22,48 @@ const galleryMarkup = images.map(el => {
     />
   </a>
 </li>
-`
-    // href="${el.original}"
-}).join('')
-galleryListRef.insertAdjacentHTML('beforeend', galleryMarkup)
+`}).join('')
 
-galleryListRef.addEventListener('click',onClickModalOpen)
+galleryListRef.insertAdjacentHTML('beforeend', galleryMarkup)
+galleryListRef.addEventListener('click', onClickModalOpen)
+modalRef.addEventListener('click', onClickModalClose)
+modalRef.addEventListener('click', onClickBtnClose)
+window.addEventListener('keyup', onKeyModalEscClose)
+
 function onClickModalOpen(e) {
+    e.preventDefault();
   if (e.target.nodeName !== "IMG") {
     return 
   }
-
-  modalRef.classList.add('is-open')
-    contentImgRef.src = e.target.src
-  contentImgRef.alt = e.target.alt
+ closeAndCleanSrc()
   
-  console.log(e.target.dataset.source);
+  let modalLink=e.target.dataset.source
+ contentImgRef.src=modalLink
 
 }
-
-modalRef.addEventListener('click', onClickModalClose)
 function onClickModalClose(e) {
   if (e.target.nodeName !== "DIV") {
     return
   }
-  modalRef.classList.remove('is-open')
-   contentImgRef.src = '';
-  contentImgRef.alt = '';
+ closeAndCleanSrc()
 }
-
-modalRef.addEventListener('click', onClickBtn)
-
-function onClickBtn(e) {
+function onClickBtnClose(e) {
   if (e.target.nodeName !== 'BUTTON') {
     return
   }
-      modalRef.classList.remove('is-open')
-     contentImgRef.src = '';
-  contentImgRef.alt = '';
+     closeAndCleanSrc()
 }
-
-window.addEventListener('keyup', onKeyModalEsc)
-function onKeyModalEsc(e) {
+function onKeyModalEscClose(e) {
   if (e.key !== 'Escape') {
     return
   }
-     modalRef.classList.remove('is-open')
+closeAndCleanSrc()
+}
+function closeAndCleanSrc() {
+       modalRef.classList.toggle('is-open')
      contentImgRef.src = '';
   contentImgRef.alt = '';
 }
-
-// window.addEventListener('keyup', onKeyLeftRight)
-// function onKeyLeftRight(e) {
-//   if (e.key === 'ArrowLeft') {
-// console.log( );
-  // contentImgRef.alt
-//   }
-//   if (e.key === 'ArrowRight') {
-//         console.log('r');
-//   }
-// }
 
 
 
