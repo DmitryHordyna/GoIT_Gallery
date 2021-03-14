@@ -5,7 +5,7 @@ const modalRef = document.querySelector('.js-lightbox');
 const contentImgRef = document.querySelector('.lightbox__image');
 
 
-const galleryMarkup = images.map((el,index) => {
+const galleryMarkup = images.map(el => {
   return `
     <li class="gallery__item">
     <a
@@ -18,36 +18,19 @@ const galleryMarkup = images.map((el,index) => {
     src ="${el.preview}"
     data-source="${el.original}"
      alt="${el.description}"
-     data-index='${index+1}';
     />
   </a>
 </li>
-`}).join('');
+`});
 
- galleryListRef.insertAdjacentHTML('beforeend', galleryMarkup);
-
-
-const allImgGalerry=document.querySelectorAll('.gallery__image')
-
-// console.log(allImgGalerry);
-
+ galleryListRef.insertAdjacentHTML('beforeend', galleryMarkup.join(''));
+document.querySelectorAll('.gallery__image')
 
 galleryListRef.addEventListener('click', onClickModalOpen);
 modalRef.addEventListener('click', onClickModalClose);
 window.addEventListener('keyup', showNextPictureKey);
 window.addEventListener('keyup', onKeyModalEscClose);
 
-
-function onClickModalOpen(e) {
-    e.preventDefault();
-  if (e.target.nodeName !== "IMG") {
-    return 
-  };
-  closeAndCleanSrc();
-  
-  let modalLink = e.target.dataset.source;
-  contentImgRef.src = modalLink;
-};
 function onClickModalClose(e) {
   if (e.target.nodeName !== "DIV" && e.target.nodeName !== 'BUTTON') {
     return
@@ -60,33 +43,41 @@ function onKeyModalEscClose(e) {
   };
   closeAndCleanSrc();
 };
-
-function showNextPictureKey(e) {
-  if (e.key === 'ArrowLeft') {
-    for (let i = 0; i < allImgGalerry.length; i += 1) {
-      if (allImgGalerry[i].dataset.source === contentImgRef.src) {
-        contentImgRef.src = allImgGalerry[i - 1].dataset.source;
-      } else (contentImgRef.dataset.index === 1){
-        
-      }
-    };
-  };
-  if (e.key === 'ArrowRight') {
-  //   for (let i = 0; i < allImgGalerry.length; i += 1) {
-  //     if (allImgGalerry[i].dataset.source === contentImgRef.src) {
-  //       contentImgRef.src=allImgGalerry[i + 1].dataset.source;
-       
-      
-  //     }
-  //   }
-  }
-}
-
 function closeAndCleanSrc() {
   modalRef.classList.toggle('is-open');
   contentImgRef.src = '';
   contentImgRef.alt = '';
 };
+
+let activeIndex = 0;
+
+function onClickModalOpen(e) {
+    e.preventDefault();
+  if (e.target.nodeName !== "IMG") {
+    return 
+  };
+  for (let el of galleryMarkup) {
+    if (el.includes(e.target.src)) {
+      activeIndex = galleryMarkup.indexOf(el);
+  }
+  }
+  closeAndCleanSrc();
+ 
+  let modalLink = e.target.dataset.source;
+  contentImgRef.src = modalLink;
+};
+function showNextPictureKey(e) {
+
+  if (e.key === 'ArrowLeft' && activeIndex >= 0) {
+    activeIndex -= 1
+    contentImgRef.src = images[activeIndex].original
+  }
+  if (e.key === 'ArrowRight' && activeIndex < images.length-1) {
+    activeIndex += 1
+    contentImgRef.src = images[activeIndex].original
+  }
+}
+
 
 
 
