@@ -67,15 +67,22 @@ function onClickModalOpen(e) {
   contentImgRef.src = modalLink;
 };
 function showNextPictureKey(e) {
-
   if (e.key === 'ArrowLeft' && activeIndex >= 0) {
     activeIndex -= 1
-    contentImgRef.src = images[activeIndex].original
   }
+
   if (e.key === 'ArrowRight' && activeIndex < images.length-1) {
     activeIndex += 1
-    contentImgRef.src = images[activeIndex].original
   }
+
+   if (activeIndex === images.length-1) {
+   activeIndex = 0
+   }
+  
+   if (activeIndex === -1) {
+    activeIndex = images.length-1
+  }
+   contentImgRef.src = images[activeIndex].original
 }
 
 
