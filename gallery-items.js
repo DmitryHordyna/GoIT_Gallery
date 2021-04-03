@@ -23,11 +23,11 @@ const galleryMarkup = images.map(el => {
 </li>
 `});
 
- galleryListRef.insertAdjacentHTML('beforeend', galleryMarkup.join(''));
+galleryListRef.insertAdjacentHTML('beforeend', galleryMarkup.join(''));
 document.querySelectorAll('.gallery__image')
 
-galleryListRef.addEventListener('click', onClickModalOpen);
-modalRef.addEventListener('click', onClickModalClose);
+galleryListRef.addEventListener('click', onClickModalOpen)
+modalRef.addEventListener('click', onClickModalClose)
 window.addEventListener('keyup', showNextPictureKey);
 window.addEventListener('keyup', onKeyModalEscClose);
 
@@ -52,17 +52,17 @@ function closeAndCleanSrc() {
 let activeIndex = 0;
 
 function onClickModalOpen(e) {
-    e.preventDefault();
+  e.preventDefault();
   if (e.target.nodeName !== "IMG") {
-    return 
+    return
   };
   for (let el of galleryMarkup) {
     if (el.includes(e.target.src)) {
       activeIndex = galleryMarkup.indexOf(el);
-  }
+    }
   }
   closeAndCleanSrc();
- 
+
   let modalLink = e.target.dataset.source;
   contentImgRef.src = modalLink;
 };
@@ -71,19 +71,23 @@ function showNextPictureKey(e) {
     activeIndex -= 1
   }
 
-  if (e.key === 'ArrowRight' && activeIndex < images.length-1) {
+  if (e.key === 'ArrowRight' && activeIndex < images.length - 1) {
     activeIndex += 1
   }
 
-   if (activeIndex === images.length-1) {
-   activeIndex = 0
-   }
-  
-   if (activeIndex === -1) {
-    activeIndex = images.length-1
+  if (activeIndex === images.length - 1) {
+    activeIndex = 0
   }
-   contentImgRef.src = images[activeIndex].original
+
+  if (activeIndex === -1) {
+    activeIndex = images.length - 1
+  }
+  contentImgRef.src = images[activeIndex].original
 }
+const logs = 4
+
+
+
 
 
 
